@@ -1,8 +1,8 @@
-import { useContext, useState } from "react"
+import { useContext, useMemo, useState } from "react"
 // import { CountContext } from "./context";
 import { Navigate } from "react-router-dom";
 import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { countAtom } from "./store/atoms/count";
+import { countAtom, evenSelector } from "./store/atoms/count";
 
 
 function App() {
@@ -21,16 +21,20 @@ function App() {
 }
 
 function Count(/* {setCount} */) {
-  console.log("count rerender");
+  // console.log("count rerender");
   return <div>
     <CountRenderer />
     <Buttons /* setCount={setCount} */ />
+    <IsEven />
   </div>
 }
 
 function CountRenderer() {
   // const count = useContext(CountContext);
   const count = useRecoilValue(countAtom);
+  
+  // console.log("re render count-render");
+
   return <div>
     {count}
   </div>
@@ -42,7 +46,7 @@ function Buttons(/* {setCount} */) {
   // const [count, setCount] = useRecoilState(countAtom);
   const setCount = useSetRecoilState(countAtom);
 
-  console.log("rerender button");
+  // console.log("rerender button");
 
   return <div>
     <button onClick={() => {
@@ -55,4 +59,20 @@ function Buttons(/* {setCount} */) {
   </div>
 }
 
+function IsEven() {
+  // const count = useRecoilValue(countAtom);
+  // const isEven = useMemo( () => {
+  //   return (count % 2 == 0)
+  // }, [count]);
+
+  const isEven = useRecoilValue(evenSelector);
+
+  // console.log("re render iseven");
+
+  return <div>
+    <h4>
+      { isEven ? "It is Even": null}
+    </h4>
+  </div>
+}
 export default App
